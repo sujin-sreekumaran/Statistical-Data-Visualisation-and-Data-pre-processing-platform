@@ -17,10 +17,6 @@ export default function UploadFile() {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("uploadedImage state changed:", uploadedImage);
-  }, [uploadedImage]);
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setUploadedImage(null); // Reset uploaded image when a new file is selected
@@ -85,7 +81,7 @@ export default function UploadFile() {
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="px-6 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">File Upload</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-6">Upload Your Data</h1>
             <div className="flex items-center justify-center w-full">
               <label
                 htmlFor="dropzone-file"
@@ -109,7 +105,12 @@ export default function UploadFile() {
                   <p className="mb-2 text-sm text-gray-500">
                     <span className="font-semibold">Click to upload</span> or drag and drop
                   </p>
-                  <p className="text-xs text-gray-500">CSV or Excel file</p>
+                  <p className="text-sm text-gray-500">CSV or Excel file</p>
+
+                  <p className="text-sm text-gray-500">
+                    Please make sure the data is already cleaned and preprocessed, Otherwise you
+                    will encounter some issues.
+                  </p>
                 </div>
                 <input
                   id="dropzone-file"

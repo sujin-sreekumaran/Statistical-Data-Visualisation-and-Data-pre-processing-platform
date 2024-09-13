@@ -55,6 +55,16 @@ def upload_file():
             moments_df.plot(kind='bar', ax=axes[2])
             axes[2].set_title('Moments of Numeric Data')
             axes[2].set_ylabel('Value')
+            
+            # Rotate x-axis labels to be horizontal and adjust their position
+            axes[2].set_xticklabels(axes[2].get_xticklabels(), rotation=0, ha='center')
+            
+            # Adjust the bottom margin to prevent label cutoff
+            plt.tight_layout()
+            fig.subplots_adjust(bottom=0.1)
+            
+            # Optionally, you can adjust the figure size if needed
+            # fig.set_size_inches(18, 26)  # Increase height if labels are still cutoff
         else:
             axes[2].text(0.5, 0.5, 'No numeric data for Moments Plot', ha='center', va='center', fontsize=12)
             axes[2].set_title('Moments of Numeric Data')
