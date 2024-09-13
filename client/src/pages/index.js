@@ -9,9 +9,11 @@ export default function Home() {
       className={`flex min-h-screen flex-col items-center justify-center p-24 bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 text-white ${inter.className}`}
     >
       <div className="z-10 w-full max-w-3xl text-center">
-        <h1 className="mb-8 text-5xl font-extrabold tracking-tight">Welcome to Data Visualizer</h1>
+        <h1 className="mb-8 text-5xl font-extrabold tracking-tight">
+          Welcome to Data Visualization
+        </h1>
         <p className="mb-12 text-xl">
-          Upload your CSV or Excel file to generate stunning visualizations.
+          Upload your CSV or Excel file to generate visualizations of your data.
         </p>
         <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <Link

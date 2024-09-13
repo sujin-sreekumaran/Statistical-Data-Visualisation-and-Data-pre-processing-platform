@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from config import Config
 
-print('>>>>>>>')
 # Load environment variables
 load_dotenv()
 
