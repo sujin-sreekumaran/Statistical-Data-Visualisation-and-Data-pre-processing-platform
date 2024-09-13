@@ -1,6 +1,11 @@
-import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export default function Navbar({ onLogout }) {
+  const handleLogout = async () => {
+    onLogout();
+    await signOut({ callbackUrl: "/login" });
+  };
+
   return (
     <nav className="bg-white shadow">
       {/* Add your navbar content here */}
@@ -9,13 +14,13 @@ export default function Navbar({ onLogout }) {
           <div className="flex">
             {/* Add logo or site name */}
             <div className="flex-shrink-0 flex items-center">
-              <span className="text-xl font-bold">Your Site Name</span>
+              <span className="text-xl font-bold">Data visualisation Platform</span>
             </div>
           </div>
           <div className="flex items-center">
             <button
-              onClick={onLogout}
-              className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+              onClick={handleLogout}
+              className="ml-4 px-3 bg-red-800 py-2 rounded-md text-sm font-medium text-white hover:bg-red-900"
             >
               Logout
             </button>

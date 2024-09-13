@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Login() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -8,7 +9,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loginError, setLoginError] = useState("");
   const router = useRouter();
+  const { data: session } = useSession();
 
   const validateEmail = (email) => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -22,7 +25,8 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Clear all errors
+    setErrors({});
+    setLoginError("");
     const newErrors = {};
 
     if (!validateEmail(email)) {
@@ -48,32 +52,50 @@ export default function Login() {
         const response = await axios.post(endpoint, { email, password });
         const { token } = response.data;
 
-        // Store the token in localStorage
-        localStorage.setItem("token", token);
+        if (!token) {
+          throw new Error("No token received");
+        }
 
-        // Redirect to the file upload page
+        localStorage.setItem("token", token);
         router.push("/file-upload");
       } catch (error) {
         console.error("Authentication error:", error);
-        setErrors({ form: "Authentication failed. Please try again." });
+        setLoginError("Your email or password is incorrect. Please try again.");
       }
     }
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setErrors((prev) => ({ ...prev, email: "", form: "" }));
+    setErrors((prev) => ({ ...prev, email: "" }));
+    setLoginError("");
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setErrors((prev) => ({ ...prev, password: "", form: "" }));
+    setErrors((prev) => ({ ...prev, password: "" }));
+    setLoginError("");
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-    setErrors((prev) => ({ ...prev, confirmPassword: "", form: "" }));
+    setErrors((prev) => ({ ...prev, confirmPassword: "" }));
   };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signIn("google", { callbackUrl: "/file-upload" });
+    } catch (error) {
+      console.error("Google login error:", error);
+      setLoginError("An error occurred during Google login. Please try again.");
+    }
+  };
+
+  // Redirect if already logged in
+  if (session) {
+    router.push("/file-upload");
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 py-12 px-4 sm:px-6 lg:px-8">
@@ -83,7 +105,11 @@ export default function Login() {
           <div className="mt-3 flex justify-center">
             <div className="flex space-x-4 bg-gray-100 p-1 rounded-md">
               <button
-                onClick={() => setIsSignIn(true)}
+                onClick={() => {
+                  setIsSignIn(true);
+                  setErrors({});
+                  setLoginError("");
+                }}
                 className={`px-4 py-2 rounded-md transition-all duration-300 ${
                   isSignIn ? "bg-white shadow-md" : "text-gray-500 hover:bg-gray-200"
                 }`}
@@ -91,7 +117,11 @@ export default function Login() {
                 Sign In
               </button>
               <button
-                onClick={() => setIsSignIn(false)}
+                onClick={() => {
+                  setIsSignIn(false);
+                  setErrors({});
+                  setLoginError("");
+                }}
                 className={`px-4 py-2 rounded-md transition-all duration-300 ${
                   !isSignIn ? "bg-white shadow-md" : "text-gray-500 hover:bg-gray-200"
                 }`}
@@ -163,6 +193,31 @@ export default function Login() {
             </div>
           )}
 
+          {loginError && (
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">{loginError}</h3>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div>
             <button
               type="submit"
@@ -172,6 +227,32 @@ export default function Login() {
             </button>
           </div>
         </form>
+
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google logo"
+                className="w-5 h-5 mr-2"
+              />
+              Sign in with Google
+            </button>
+          </div>
+        </div>
+
         {isSignIn && (
           <div className="text-sm text-center">
             <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
