@@ -22,6 +22,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({}); // Clear all errors
     const newErrors = {};
 
     if (!validateEmail(email)) {
@@ -42,8 +43,8 @@ export default function Login() {
     } else {
       try {
         const endpoint = isSignIn
-          ? `${process.env.LOCAL_URL}/api/login`
-          : `${process.env.LOCAL_URL}/api/signup`;
+          ? `${process.env.NEXT_PUBLIC_LOCAL_URL}/api/login`
+          : `${process.env.NEXT_PUBLIC_LOCAL_URL}/api/signup`;
         const response = await axios.post(endpoint, { email, password });
         const { token } = response.data;
 
@@ -57,6 +58,21 @@ export default function Login() {
         setErrors({ form: "Authentication failed. Please try again." });
       }
     }
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setErrors((prev) => ({ ...prev, email: "", form: "" }));
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setErrors((prev) => ({ ...prev, password: "", form: "" }));
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setErrors((prev) => ({ ...prev, confirmPassword: "", form: "" }));
   };
 
   return (
@@ -99,7 +115,7 @@ export default function Login() {
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 autoComplete="off"
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -116,7 +132,7 @@ export default function Login() {
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 autoComplete="new-password"
               />
               {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
@@ -137,7 +153,7 @@ export default function Login() {
                   className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Confirm Password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={handleConfirmPasswordChange}
                   autoComplete="new-password"
                 />
                 {errors.confirmPassword && (
