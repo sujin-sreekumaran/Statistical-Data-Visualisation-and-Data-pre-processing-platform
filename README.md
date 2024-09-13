@@ -6,6 +6,7 @@ This project is a web application that allows users to upload CSV or Excel files
 
 ## File Structure
 
+```bash
 project-root/
 │
 ├── client/ # Frontend directory
@@ -21,6 +22,7 @@ project-root/
 │ ├── requirements.txt # Python dependencies
 │
 └── .gitignore # Git ignore file
+```
 
 ## Setup Instructions
 
