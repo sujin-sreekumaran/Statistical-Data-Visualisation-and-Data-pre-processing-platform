@@ -14,4 +14,4 @@ class Config:
     DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
     PORT = int(os.environ.get('PORT', 5000))
 
-   
+

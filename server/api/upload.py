@@ -73,7 +73,7 @@ def upload_file():
         img = io.BytesIO()
         plt.savefig(img, format='png', bbox_inches='tight', dpi=300)  # Increase resolution for better quality
         img.seek(0)
-
+        print('Image saved', img)
         # Return the image as a response
         return send_file(img, mimetype='image/png')
     
