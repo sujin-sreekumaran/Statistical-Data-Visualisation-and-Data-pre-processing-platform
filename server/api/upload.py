@@ -33,7 +33,7 @@ def upload_file():
             axes[0].set_title('Curve Plot')
             axes[0].legend()
         else:
-            axes[0].text(0.5, 0.5, 'No numeric data for Curve Plot', ha='center', va='center', fontsize=12)
+            axes[0].text(0.5, 0.5, 'Rows have non numeric data mixed with numeric data!!! for curve plot.', ha='center', va='center', fontsize=12)
             axes[0].set_title('Curve Plot')
 
         # Visualization 2: Boxplot
@@ -41,7 +41,7 @@ def upload_file():
             sns.boxplot(data=numeric_df, ax=axes[1])
             axes[1].set_title('Boxplot')
         else:
-            axes[1].text(0.5, 0.5, 'No numeric data for Boxplot', ha='center', va='center', fontsize=12)
+            axes[1].text(0.5, 0.5, 'Rows have non numeric data mixed with numeric data!!! for Boxplot', ha='center', va='center', fontsize=12)
             axes[1].set_title('Boxplot')
 
         # Visualization 3: Moments
@@ -53,7 +53,7 @@ def upload_file():
                 'Kurtosis': numeric_df.apply(kurtosis)
             })
             moments_df.plot(kind='bar', ax=axes[2])
-            axes[2].set_title('Moments of Numeric Data')
+            axes[2].set_title('Moments of Mean, Variance, Skewness, and Kurtosis')
             axes[2].set_ylabel('Value')
             
             # Rotate x-axis labels to be horizontal and adjust their position
@@ -66,15 +66,15 @@ def upload_file():
             # Optionally, you can adjust the figure size if needed
             # fig.set_size_inches(18, 26)  # Increase height if labels are still cutoff
         else:
-            axes[2].text(0.5, 0.5, 'No numeric data for Moments Plot', ha='center', va='center', fontsize=12)
-            axes[2].set_title('Moments of Numeric Data')
+            axes[2].text(0.5, 0.5, 'Rows have non numeric data mixed with numeric data!!! for Moments Plot', ha='center', va='center', fontsize=12)
+            axes[2].set_title('Moments of Mean, Variance, Skewness, and Kurtosis')
 
         # Visualization 4: Heatmap
         if not numeric_df.empty:
             sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', ax=axes[3])
             axes[3].set_title('Correlation Heatmap')
         else:
-            axes[3].text(0.5, 0.5, 'No numeric data for Heatmap', ha='center', va='center', fontsize=12)
+            axes[3].text(0.5, 0.5, 'Rows have non numeric data mixed with numeric data!!! for Heatmap', ha='center', va='center', fontsize=12)
             axes[3].set_title('Correlation Heatmap')
 
         plt.tight_layout()
