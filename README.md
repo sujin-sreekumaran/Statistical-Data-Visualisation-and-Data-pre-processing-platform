@@ -19,6 +19,7 @@ project-root/
 │
 ├── server/ # Backend directory
 │ ├── app.py # Flask application
+│ ├── api # API folder
 │ ├── requirements.txt # Python dependencies
 │
 └── .gitignore # Git ignore file
@@ -101,18 +102,4 @@ python app.py
     •	Moments Plot: Visualizes statistical moments including mean, variance, skewness, and kurtosis.
     •	Heatmap: Shows the correlation matrix of numeric columns.
 
-## Dependencies
 
-### Frontend (client)
-
-    •	Next.js
-    •	React
-
-### Backend (server)
-
-    •	Flask
-    •	Flask-CORS
-    •	pandas
-    •	matplotlib
-    •	seaborn
-    •	scipy
