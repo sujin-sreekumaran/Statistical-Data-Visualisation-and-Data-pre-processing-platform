@@ -41,7 +41,9 @@ export default function Login() {
       setErrors(newErrors);
     } else {
       try {
-        const endpoint = isSignIn ? "/api/login" : "/api/signup";
+        const endpoint = isSignIn
+          ? `${process.env.LOCAL_URL}/api/login`
+          : `${process.env.LOCAL_URL}/api/signup`;
         const response = await axios.post(endpoint, { email, password });
         const { token } = response.data;
 
