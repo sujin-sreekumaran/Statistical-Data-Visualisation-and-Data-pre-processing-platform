@@ -13,7 +13,8 @@ export default function Home() {
           Welcome to Data Visualization
         </h1>
         <p className="mb-12 text-xl">
-          Upload your CSV or Excel file to generate visualizations of your data.
+          Upload your CSV or Excel file or Google Sheet link to generate visualizations of your
+          data.
         </p>
         <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <Link
